@@ -55,8 +55,9 @@ like ``payload`` or ``extensions``.
 
 .. code-block:: python
 
-    r = c.payment_init(14, 1000000, 'http://twisto.dev/', 'Tesovaci nakup', customer_id='a@a.aa',
-                       return_method='GET', pay_operation='payment', merchant_data=[1, 2, 3])
+    r = c.payment_init(14, 1000000, 'http://twisto.dev/', 'Testovaci nakup', customer_id='a@a.aa',
+                       return_method=ReturnMethod.GET, pay_operation=PayOperation.PAYMENT,
+                       merchant_data=[1, 2, 3])
     r.payload
     #[Out]# OrderedDict([('payId', 'b627c1e4e60fcBF'),
     #[Out]#              ('dttm', '20160615104254'),
@@ -129,13 +130,13 @@ appropriate enumerations are available.
     r = c.payment_init(16, 123400, "http://twisto.dev/", "Testovací nákup", **data)
 
 
-Custom payments are initialized with ``c.payment_init(pay_operation='customPayment')``, you can optionally set 
+Custom payments are initialized with ``c.payment_init(pay_operation=PayOperation.CUSTOM_PAYMENT)``, you can optionally set 
 payment validity by ``custom_expiry='YYYYMMDDhhmmss'``.
 
 .. code-block:: python
 
-    r = c.payment_init(14, 1000000, 'http://twisto.dev/', 'Testovaci nakup', return_method='POST',
-                       pay_operation='customPayment', custom_expiry='20160630120000')
+    r = c.payment_init(14, 1000000, 'http://twisto.dev/', 'Testovaci nakup', return_method=ReturnMethod.POST,
+                       pay_operation=PayOperation.CUSTOM_PAYMENT, custom_expiry='20160630120000')
     r.payload
     #[Out]# OrderedDict([('payId', 'b627c1e4e60fcBF'),
     #[Out]#              ('dttm', '20160615104254'),
@@ -150,7 +151,7 @@ on URL ``https://platebnibrana.csob.cz/payment/{customerCode}`` (``c.get_payment
 for custom payments).
 
 You can also use one-click payment methods. For this you need
-to call ``c.payment_init(pay_operation='oneclickPayment')``. After this transaction confirmed
+to call ``c.payment_init(pay_operation=PayOperation.ONECLICK_PAYMENT)``. After this transaction confirmed
 you can use obtained ``payId`` as template for one-click payment.
 
 .. code-block:: python
