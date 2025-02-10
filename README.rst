@@ -64,7 +64,7 @@ like ``payload`` or ``extensions``.
     #[Out]#              ('resultMessage', 'OK'),
     #[Out]#              ('paymentStatus', 1),
     #[Out]#              ('merchantData', [1, 2, 3])]),
-    #[Out]#              ('dttime', datetime.datetime(2016, 6, 15, 10, 42, 54))])
+    #[Out]#              ('dttime', datetime.datetime(2016, 6, 15, 10, 42, 54, tzinfo=zoneinfo.ZoneInfo("Europe/Prague"))])
 
 After payment init get URL to redirect to for ``payId`` obtained from previous step.
 
@@ -85,7 +85,7 @@ You can check payment status.
     #[Out]#              ('resultMessage', 'OK'),
     #[Out]#              ('paymentStatus', 7),
     #[Out]#              ('authCode', '042760'),
-    #[Out]#              ('dttime', datetime.datetime(2016, 6, 15, 10, 45, 1))])
+    #[Out]#              ('dttime', datetime.datetime(2016, 6, 15, 10, 45, 1, tzinfo=zoneinfo.ZoneInfo("Europe/Prague"))])
 
 Structured data (i.e. ``cart``, ``customer`` and ``order``) are passed to ``payment_init`` as dataclasses, for some items
 appropriate enumerations are available.
@@ -143,7 +143,7 @@ payment validity by ``custom_expiry='YYYYMMDDhhmmss'``.
     #[Out]#              ('resultMessage', 'OK'),
     #[Out]#              ('paymentStatus', 1)]),
     #[Out]#              ('customerCode', 'E61EC8'),
-    #[Out]#              ('dttime', datetime.datetime(2016, 6, 15, 10, 42, 54))])
+    #[Out]#              ('dttime', datetime.datetime(2016, 6, 15, 10, 42, 54, tzinfo=zoneinfo.ZoneInfo("Europe/Prague"))])
 
 Send (by whatever means) obtained ``customerCode`` to customer who can then perform payment anytime within its validity
 on URL ``https://platebnibrana.csob.cz/payment/{customerCode}`` (``c.get_payment_process_url`` is not applicable
@@ -162,7 +162,7 @@ you can use obtained ``payId`` as template for one-click payment.
     #[Out]#              ('resultCode', 0),
     #[Out]#              ('resultMessage', 'OK'),
     #[Out]#              ('paymentStatus', 1),
-    #[Out]#              ('dttime', datetime.datetime(2016, 6, 15, 10, 45, 32))])
+    #[Out]#              ('dttime', datetime.datetime(2016, 6, 15, 10, 45, 32, tzinfo=zoneinfo.ZoneInfo("Europe/Prague"))])
 
     r = c.oneclick_start('ff7d3e7c6c4fdBF')
     r.payload
@@ -171,7 +171,7 @@ you can use obtained ``payId`` as template for one-click payment.
     #[Out]#              ('resultCode', 0),
     #[Out]#              ('resultMessage', 'OK'),
     #[Out]#              ('paymentStatus', 2),
-    #[Out]#              ('dttime', datetime.datetime(2016, 6, 15, 10, 46, 19))])
+    #[Out]#              ('dttime', datetime.datetime(2016, 6, 15, 10, 46, 19, tzinfo=zoneinfo.ZoneInfo("Europe/Prague"))])
 
     r = c.payment_status('ff7d3e7c6c4fdBF')
     r.payload
@@ -181,7 +181,7 @@ you can use obtained ``payId`` as template for one-click payment.
     #[Out]#              ('resultMessage', 'OK'),
     #[Out]#              ('paymentStatus', 7),
     #[Out]#              ('authCode', '168164'),
-    #[Out]#              ('dttime', datetime.datetime(2016, 6, 15, 10, 46, 43))])
+    #[Out]#              ('dttime', datetime.datetime(2016, 6, 15, 10, 46, 43, tzinfo=zoneinfo.ZoneInfo("Europe/Prague"))])
 
 Of course you can use standard requests's methods on ``response`` object.
 

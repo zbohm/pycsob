@@ -1,6 +1,7 @@
 # coding: utf-8
 import json
 import os
+import zoneinfo
 from collections import OrderedDict
 from datetime import datetime, timedelta, timezone
 from unittest import TestCase
@@ -148,7 +149,7 @@ class OrderTests(TestCase):
 class CsobClientTests(TestCase):
 
     dttm = "20190502161426"
-    dttime = datetime(2019, 5, 2, 16, 14, 26)
+    dttime = datetime(2019, 5, 2, 16, 14, 26, tzinfo=zoneinfo.ZoneInfo("Europe/Prague"))
 
     def setUp(self):
         self.c = CsobClient(merchant_id='MERCHANT',
@@ -669,8 +670,14 @@ class CsobClientTests(TestCase):
             ('pycsob', 'DEBUG', "Pycsob response headers: {'Content-Type': 'text/plain'}")
         )
 
-    def test_dttm_decode(self):
+    def test_dttm_decode_tzinfo_default(self):
         self.assertEqual(utils.dttm_decode("20190502161426"), self.dttime)
+
+    def test_dttm_decode_tzinfo_defined(self):
+        self.assertEqual(
+            utils.dttm_decode("20190502161426", timezone="UTC"),
+            datetime(2019, 5, 2, 16, 14, 26, tzinfo=timezone.utc),
+        )
 
     @responses.activate
     def test_description_strip(self):

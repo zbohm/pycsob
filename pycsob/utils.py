@@ -2,6 +2,7 @@ import datetime
 import logging
 import re
 import requests
+import zoneinfo
 from base64 import b64encode, b64decode
 from collections import OrderedDict
 from Crypto.Hash import SHA256
@@ -14,6 +15,8 @@ from . import conf
 from urllib.parse import urljoin, quote_plus
 
 LOGGER = logging.getLogger('pycsob')
+# See: https://github.com/csob/paymentgateway/wiki/Technical-FAQ#what-time-zone-should-be-used-for-dttm-parameter
+DEFAULT_TIMEZONE = "Europe/Prague"
 
 
 class CsobVerifyError(Exception):
@@ -102,9 +105,10 @@ def dttm(format_='%Y%m%d%H%M%S'):
     return datetime.datetime.now().strftime(format_)
 
 
-def dttm_decode(value):
-    """Decode dttm value '20190404091926' to the datetime object."""
-    return datetime.datetime.strptime(value, "%Y%m%d%H%M%S")
+def dttm_decode(value, timezone=DEFAULT_TIMEZONE):
+    """Decode dttm value '20190404091926' to the datetime object with timezone."""
+    dttm = datetime.datetime.strptime(value, "%Y%m%d%H%M%S")
+    return dttm.replace(tzinfo=zoneinfo.ZoneInfo(timezone))
 
 
 def validate_response(response, key):
